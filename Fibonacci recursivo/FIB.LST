@@ -1,0 +1,28 @@
+ 0000                    CPU "Z80.TBL"
+ 0000                    HOF "INT8" 
+                
+ 0000 3A0010            LD A,(1000H)
+ 0003 47                LD B,A
+ 0004 CD0F00            CALL FIBONACCI
+ 0007 DD210110          LD IX, 1001H
+ 000B DD7200            LD (IX+0),D
+ 000E 76                HALT
+                
+ 000F 78        FIBONACCI: LD A,B
+ 0010 FE02                 CP 2
+ 0012 CA2500               JP Z,SUMAR
+ 0015 FE01                 CP 1
+ 0017 CA2400               JP Z,REGRESAR
+ 001A 05                   DEC B
+ 001B C5                   PUSH BC
+ 001C CD0F00               CALL FIBONACCI
+ 001F C1                   POP BC
+ 0020 05                   DEC B
+ 0021 CD0F00               CALL FIBONACCI
+ 0024 C9        REGRESAR: RET
+ 0025 14        SUMAR: INC D
+ 0026 C32400           JP REGRESAR
+ 0000           	END
+000F  FIBONACCI          0024  REGRESAR           0025  SUMAR              
+
+

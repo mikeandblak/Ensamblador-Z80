@@ -1,0 +1,41 @@
+ 0000                   CPU "Z80.TBL"
+ 0000                   HOF "INT8"
+                
+ 0000 2E00              LD L,0;CONTADOR
+ 0002 3A0010            LD A,(1000H)
+ 0005 47                LD B,A;CARGA TAM BLOQUE
+ 0006 3A0110            LD A,(1001H)
+ 0009 4F                LD C,A;CARGA TAM CADENA
+ 000A DD210210          LD IX,1002H;CARGA INICIO CAD
+ 000E FD212010          LD IY,1020H;CARGA INICIO BLOQ
+ 0012 FDE5              PUSH IY
+ 0014 FD7E00    ETI3:   LD A,(IY+0);OBTIENE EL VALOR DE MEM
+ 0017 FE00              CP 0
+ 0019 CA2B00            JP Z,ETI1
+ 001C D1                POP DE
+ 001D FD23              INC IY
+ 001F 05                DEC B
+ 0020 78                LD A,B
+ 0021 B9                CP C
+ 0022 CA2A00            JP Z,ETI2
+ 0025 FDE5              PUSH IY
+ 0027 F21400            JP P,ETI3
+ 002A 76        ETI2:   HALT
+ 002B FD23      ETI1:   INC IY
+ 002D 2C                INC L
+ 002E 7D                LD A,L
+ 002F B9                CP C
+ 0030 C21400            JP NZ,ETI3
+ 0033 FDE1              POP IY
+ 0035 DD5600    ETI4:   LD D,(IX+0)
+ 0038 FD7200            LD (IY+0), D
+ 003B 0D                DEC C
+ 003C 79                LD A,C
+ 003D FE00              CP 0
+ 003F CA2A00            JP Z,ETI2
+ 0042 FD23              INC IY
+ 0044 DD23              INC IX
+ 0046 C33500            JP ETI4 0000           	END
+002B  ETI1               002A  ETI2               0014  ETI3               
+0035  ETI4               
+

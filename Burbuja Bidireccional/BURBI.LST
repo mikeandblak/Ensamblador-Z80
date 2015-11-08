@@ -1,0 +1,48 @@
+ 0000                 CPU "Z80.TBL"
+ 0000                 HOF "INT8"
+ 0000 3A0010          LD A,(1000H)
+ 0003 5F              LD E,A
+ 0004 FE00            CP 0
+ 0006 CA5700          JP Z,FIN
+ 0009 DD210110        LD IX, 1001H
+ 000D 4B        ETI5: LD C,E
+ 000E 43              LD B,E
+ 000F DD7E01    ETI2: LD A,(IX+1)
+ 0012 67              LD H,A
+ 0013 DD7E00          LD A,(IX+0)
+ 0016 BC              CP H
+ 0017 FA2300          JP M,ETI1
+ 001A CA2300          JP Z,ETI1
+ 001D DD7400          LD (IX+0),H
+ 0020 DD7701          LD (IX+1),A
+ 0023 DD23      ETI1: INC IX
+ 0025 0D              DEC C
+ 0026 79              LD A,C
+ 0027 FE01            CP 1
+ 0029 C20F00          JP NZ,ETI2
+ 002C DD2B            DEC IX
+ 002E DD7E01    ETI4: LD A,(IX+1)
+ 0031 67              LD H,A
+ 0032 DD7E00          LD A,(IX+0)
+ 0035 BC              CP H
+ 0036 FA4200          JP M,ETI3
+ 0039 CA4200          JP Z,ETI3
+ 003C DD7400          LD (IX+0),H
+ 003F DD7701          LD (IX+1),A
+ 0042 DD2B      ETI3: DEC IX
+ 0044 05              DEC B
+ 0045 78              LD A,B
+ 0046 FE01            CP 1
+ 0048 C22E00          JP NZ,ETI4
+ 004B 1D              DEC E
+ 004C 7B              LD A,E
+ 004D FE01            CP 1
+ 004F CA5700          JP Z,FIN
+ 0052 DD23            INC IX                                                  
+ 0054 C30D00          JP ETI5
+ 0057 76        FIN:  HALT
+ 0000           	END
+0023  ETI1               000F  ETI2               0042  ETI3               
+002E  ETI4               000D  ETI5               0057  FIN                
+
+

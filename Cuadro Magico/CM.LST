@@ -1,0 +1,110 @@
+ 0000                   CPU "Z80.TBL"
+ 0000                   HOF "INT8"
+                
+ 0000 3A0010            LD A,(1000H)
+ 0003 47                LD B,A
+ 0004 CD9A00            CALL OBTCAS
+ 0007 CDA400            CALL MITAD
+ 000A 2E00              LD L,0
+ 000C 0E01              LD C,1
+ 000E DD210110          LD IX,1001H
+ 0012 CD5E00            CALL ACTUALIZAR
+ 0015 DD7100    PUTNUM: LD (IX+0),C
+ 0018 0C                INC C
+ 0019 24        AVANZAR: INC H
+ 001A 2D                DEC L
+ 001B CD5E00            CALL ACTUALIZAR
+ 001E 58                LD E,B ; COMIENZA A APLICAR REGLAS
+ 001F 1D                DEC E
+ 0020 7C                LD A,H
+ 0021 BB                CP E
+ 0022 FA3100            JP M,SALTAR2
+ 0025 CA3100            JP Z,SALTAR2
+ 0028 7D                LD A,L
+ 0029 FE00              CP 0
+ 002B F23100            JP P,SALTAR2
+ 002E 25                DEC H
+ 002F 2C                INC L
+ 0030 2C                INC L
+ 0031 58        SALTAR2: LD E,B ;SEGUNDA REGLA
+ 0032 1D                DEC E
+ 0033 7C                LD A,H
+ 0034 BB                CP E
+ 0035 FA4000            JP M,SALTAR3
+ 0038 CA4000            JP Z,SALTAR3
+ 003B 2600              LD H,0
+ 003D C35500            JP SALTAR5
+ 0040 7D        SALTAR3: LD A,L
+ 0041 FE00              CP 0
+ 0043 F24A00            JP P,SALTAR4
+ 0046 6B                LD L,E
+ 0047 C35500            JP SALTAR5
+ 004A DD7E00    SALTAR4: LD A,(IX+0)
+ 004D FE00               CP 0
+ 004F CA5500             JP Z,SALTAR5
+ 0052 25                 DEC H
+ 0053 2C                 INC L
+ 0054 2C                 INC L
+ 0055 CD5E00    SALTAR5: CALL ACTUALIZAR
+ 0058 7A                LD A,D
+ 0059 B9                CP C
+ 005A F21500            JP P,PUTNUM
+ 005D 76                HALT
+                        
+ 005E DD210110  ACTUALIZAR: LD IX,1001H
+ 0062 7C                LD A,H
+ 0063 FE00              CP 0
+ 0065 CA7100            JP Z,SALTO 
+ 0068 F28800            JP P,INCIXH
+ 006B DD2B      REG1:   DEC IX ;INICIA DECIXH
+ 006D 3C                INC A
+ 006E C26B00            JP NZ,REG1
+ 0071 3E00      SALTO:  LD A,0
+ 0073 58                LD E,B
+ 0074 85        MULT:   ADD A,L
+ 0075 1D                DEC E
+ 0076 C27400            JP NZ, MULT
+ 0079 FE00              CP 0
+ 007B CA8700            JP Z,REGRESAR
+ 007E F29100            JP P,INCIXL
+ 0081 DD2B      REG2:   DEC IX ;INICIA DECIXL
+ 0083 3C                INC A
+ 0084 C28100            JP NZ,REG2
+ 0087 C9        REGRESAR: RET
+ 0088 DD23      INCIXH: INC IX
+ 008A 3D                DEC A
+ 008B C28800            JP NZ,INCIXH
+ 008E C37100            JP SALTO
+ 0091 DD23      INCIXL: INC IX
+ 0093 3D                DEC A
+ 0094 C29100            JP NZ,INCIXL
+ 0097 C38700            JP REGRESAR
+                
+ 009A 58        OBTCAS: LD E,B
+ 009B 3E00              LD A,0
+ 009D 80        MULOC:  ADD A,B
+ 009E 1D                DEC E
+ 009F C29D00            JP NZ,MULOC
+ 00A2 57                LD D,A
+ 00A3 C9                RET
+                
+ 00A4 78        MITAD: LD A,B
+ 00A5 3D               DEC A
+ 00A6 FE02      ETI1:  CP 2
+ 00A8 CAB100           JP Z,ETI2
+ 00AB D602             SUB 2
+ 00AD 0C               INC C
+ 00AE C3A600           JP ETI1
+ 00B1 0C        ETI2:  INC C       
+ 00B2 61        ETI4:  LD H,C
+ 00B3 C9               RET
+                
+                        0000           	END
+005E  ACTUALIZAR         0019  AVANZAR            00A6  ETI1               
+00B1  ETI2               00B2  ETI4               0088  INCIXH             
+0091  INCIXL             00A4  MITAD              009D  MULOC              
+0074  MULT               009A  OBTCAS             0015  PUTNUM             
+006B  REG1               0081  REG2               0087  REGRESAR           
+0031  SALTAR2            0040  SALTAR3            004A  SALTAR4            
+0055  SALTAR5            0071  SALTO              
+

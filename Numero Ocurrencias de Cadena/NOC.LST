@@ -1,0 +1,64 @@
+ 0000               CPU "Z80.TBL"
+ 0000               HOF "INT8"
+                
+ 0000 FD212010        LD IY,1020H
+ 0004 1E00            LD E,0
+ 0006 3A0010          LD A,(1000H)
+ 0009 47              LD B,A
+ 000A 3A0110    ETI6: LD A,(1001H)
+ 000D 4F              LD C,A
+ 000E 78              LD A,B
+                
+ 000F FE00            CP 0
+ 0011 CA3800          JP Z,ETI7
+ 0014 DD210210        LD IX,1002H
+ 0018 FDE5            PUSH IY
+ 001A FD7E00    ETI3: LD A,(IY+0)
+ 001D 57              LD D,A
+ 001E DD7E00          LD A,(IX+0)
+ 0021 BA              CP D
+                
+ 0022 C25700          JP NZ,ETI1
+ 0025 05              DEC B
+ 0026 0D              DEC C
+ 0027 DD23            INC IX
+ 0029 FD23            INC IY
+ 002B 79              LD A,C
+ 002C FE00            CP 0
+ 002E CA3400          JP Z,ETI2
+ 0031 C31A00          JP ETI3
+                
+ 0034 1C        ETI2: INC E
+ 0035 C30A00          JP eti6
+ 0038 7B        ETI7: LD A,E
+ 0039 FE00            CP 0
+ 003B CA5600          JP Z,ETI4
+                
+ 003E DD210020        LD IX,2000H
+ 0042 DD7300          LD (IX+0),E
+ 0045 DD23      ETI5: INC IX
+                
+ 0047 E1              POP HL
+ 0048 DD7400          LD (IX+0),H
+ 004B DD7501          LD (IX+1),L
+ 004E DD23            INC IX
+ 0050 3D              DEC A
+                
+ 0051 FE00            CP 0
+                
+ 0053 C24500          JP NZ,ETI5
+ 0056 76        ETI4: HALT
+                
+ 0057 FD23      ETI1: INC IY
+                
+ 0059 05              DEC B
+ 005A E1              POP HL
+ 005B C30A00          JP ETI6
+                
+                
+                
+ 0000           	END
+0057  ETI1               0034  ETI2               001A  ETI3               
+0056  ETI4               0045  ETI5               000A  ETI6               
+0038  ETI7               
+
